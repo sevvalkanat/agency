@@ -16,7 +16,6 @@ const PortfolioSchema =  new Schema({
     },
     description:{
         type:String,
-        require: true,
         trim: true,
     },
     client:{

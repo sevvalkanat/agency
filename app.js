@@ -32,14 +32,21 @@ app.get('/',async(req,res)=>{
         portfolios
     })
 }) 
-app.get('/portfolios/:id',(req,res)=>{
-console.log(req.params.id);
-})
 
 app.post('/portfolios',async(req,res)=>{
 await Portfolio.create(req.body);
 res.redirect('/');
 })
+
+
+app.get('/portfolios/:id',async(req,res)=>{
+const portfolio = await Portfolio.findById(req.params.id)
+    res.render('portfolio',{
+        portfolio
+    })
+
+})
+
 
 
 

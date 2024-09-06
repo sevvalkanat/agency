@@ -3,7 +3,7 @@
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Portfolio 
-                    <a  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#portfolioAddModal" >Add</a>
+                    <a  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#portfolioAddModal" >add</a>
                 </h2>
                    </div>
               
@@ -12,7 +12,7 @@
        <!-- ADD MODAL YAPISI -->
       <div class="modal fade" id="portfolioAddModal" tabindex="-1" aria-labelledby="portfolioAddModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <form action="/portfolios" method="POST"  enctype="multipart/form-data" accept="jpg, png, jpeg, svg, bmp">
+          <form action="/portfolios" method="POST" encType="multipart/form-data"  accept="jpg, png, jpeg, svg, bmp" >
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Portfolio</h1>
@@ -61,23 +61,63 @@
                     
                     <a class="portfolio-link"
                      data-bs-toggle="modal" 
-                     href="<%= portfolios[i]._id %>">
+                     href="#modal<%= portfolios[i]._id %>">
                         <div class="portfolio-hover">
                             <div class="portfolio-hover-content">
                                 <i class="fas fa-plus fa-3x"></i>
                             </div>
                         </div>
-                        <img class="img-fluid" src="assets/img/portfolio/1.jpg" alt="<%= portfolios[i].title %>" />
+                        <img class="img-fluid" src="assets/img/portfolio/1.jpg" alt="<%= portfolios[i].brief %>" />
                     </a>
                     <div class="portfolio-caption">
                         <div class="portfolio-caption-heading"><%= portfolios[i].title %></div>
                         <div class="portfolio-caption-subheading text-muted">
-                          <%= portfolios[i].brief %>
+                          <%= portfolios[i].category %>
 
                         </div>
                     </div>
                 </div>
             </div>
-           <% }%>
+           <% } %>
             </div>
+
+            <% for (let i =0; i < portfolios.length; i++) { %>
+            <!-- Portfolio Modals-->
+        <!-- Portfolio item 1 modal popup-->
+        <div class="portfolio-modal modal fade" id="modal<%= portfolios[i]._id %>" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                  <div class="container">
+                      <div class="row justify-content-center">
+                          <div class="col-lg-8">
+                              <div class="modal-body">
+                                  <!-- Project details-->
+                                  <h2 class="text-uppercase"><%= portfolios[i].title %></h2>
+                                  <p class="item-intro text-muted"><%= portfolios[i].brief %></p>
+                                  
+                                  <img class="img-fluid d-block mx-auto" alt="<%= portfolios[i].title %>" />
+                                  <p><%= portfolios[i].description %></p>
+                                  <ul class="list-inline">
+                                      <li>
+                                          <strong>Client:</strong>
+                                          <%= portfolios[i].client %>
+                                      </li>
+                                      <li>
+                                          <strong>Category:</strong>
+                                          <%= portfolios[i].category %>
+                                      </li>
+                                  </ul>
+                                  <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                      <i class="fas fa-xmark me-1"></i>
+                                      Close Project
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <% } %>
           
