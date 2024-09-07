@@ -67,7 +67,7 @@
                                 <i class="fas fa-plus fa-3x"></i>
                             </div>
                         </div>
-                        <img class="img-fluid" src="assets/img/portfolio/1.jpg" alt="<%= portfolios[i].brief %>" />
+                        <img class="img-fluid" src="<%= portfolios[i].photo %>" alt="<%= portfolios[i].title %>" />
                     </a>
                     <div class="portfolio-caption">
                         <div class="portfolio-caption-heading"><%= portfolios[i].title %></div>
@@ -96,7 +96,7 @@
                                   <h2 class="text-uppercase"><%= portfolios[i].title %></h2>
                                   <p class="item-intro text-muted"><%= portfolios[i].brief %></p>
                                   
-                                  <img class="img-fluid d-block mx-auto" alt="<%= portfolios[i].title %>" />
+                                  <img class="img-fluid d-block mx-auto"  src="<%= portfolios[i].photo %>" alt="<%= portfolios[i].title %>" />
                                   <p><%= portfolios[i].description %></p>
                                   <ul class="list-inline">
                                       <li>

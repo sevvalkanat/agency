@@ -29,14 +29,13 @@ const PortfolioSchema =  new Schema({
     photo:{
         type:String,
         trim: true,
-        dateCreated: {
-        type: Date,
-        default:Date.now
+        require: true
+        
 
     }
     }
     
-})    
+)    
 
 
 

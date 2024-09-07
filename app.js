@@ -1,11 +1,13 @@
 const express = require('express');
+const fs = require('fs');
+const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const ejs = require('ejs');
 
 
 
 //models
-const Portfolio =require("./models/Portfolio");
+const Portfolio = require("./models/Portfolio");
 
 
 //connect db
@@ -13,41 +15,79 @@ mongoose.connect('mongodb://localhost/agency-db')
 
 
 
-  
+
 
 //middlewares
 const app = express();
-app.set("view engine","ejs");
+app.set("view engine", "ejs");
 app.use(express.static('public'));
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 
 
 
 
 //routes
-app.get('/',async(req,res)=>{
+app.get('/', async (req, res) => {
     const portfolios = await Portfolio.find({})
-    res.render('index',{
+    res.render('index', {
         portfolios
     })
-}) 
-
-app.post('/portfolios',async(req,res)=>{
-await Portfolio.create(req.body);
-res.redirect('/');
-})
+});
 
 
-app.get('/portfolios/:id',async(req,res)=>{
-const portfolio = await Portfolio.findById(req.params.id)
-    res.render('portfolio',{
+app.get('/portfolios/:id', async (req, res) => {
+    const portfolio = await Portfolio.findById(req.params.id)
+    res.render('portfolio', {
         portfolio
     })
 
-})
+});
 
+// app.post('/portfolios', async (req, res) => {
+//     //await Portfolio.create(req.body);
+//     //res.redirect('/');
+//     const uploadDir = 'public/uploads';
+//     if (!fs.existsSync(uploadDir)) {
+//         fs.mkdirSync(uploadDir);
+//     }
+//     let uploadePhoto = req.files.photo;
+//     let uploadPath = __dirname + 'public/uploads/' + uploadePhoto.name;
 
+//     uploadePhoto.mv(uploadPath, async () => {
+//         await Portfolio.create({
+//             ...req.body,
+//             photo: '/uploads/' + uploadePhoto.name
+
+//         });
+//         res.redirect('/');
+//     })
+
+// });
+
+app.post('/portfolios', async (req, res) => {
+//     await Portfolio.create(req.body)
+//     res.redirect('/')
+//   ;
+  
+    const uploadDir = 'public/uploads';
+  
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+  
+    let uploadePhoto = req.files.photo;
+    let uploadPath = __dirname + '/public/uploads/' + uploadePhoto.name;
+  
+    uploadePhoto.mv(uploadPath, async () => {
+      await Portfolio.create({
+        ...req.body,
+        photo: '/uploads/' + uploadePhoto.name,
+      });
+      res.redirect('/');
+    });
+  });
 
 
 
@@ -64,6 +104,6 @@ const portfolio = await Portfolio.findById(req.params.id)
 
 
 const port = 3000;
-app.listen(port,()=>{
-console.log(`sunucu ${port} portunda başlatıldı.. `)
+app.listen(port, () => {
+    console.log(`sunucu ${port} portunda başlatıldı.. `)
 })
