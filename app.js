@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const methodOverride = require('method-override'); 
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const ejs = require('ejs');
@@ -23,6 +24,7 @@ app.set("view engine", "ejs");
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
+app.use(methodOverride('_method'));
 
 
 
@@ -45,49 +47,43 @@ app.get('/portfolios/:id', async (req, res) => {
 
 });
 
-// app.post('/portfolios', async (req, res) => {
-//     //await Portfolio.create(req.body);
-//     //res.redirect('/');
-//     const uploadDir = 'public/uploads';
-//     if (!fs.existsSync(uploadDir)) {
-//         fs.mkdirSync(uploadDir);
-//     }
-//     let uploadePhoto = req.files.photo;
-//     let uploadPath = __dirname + 'public/uploads/' + uploadePhoto.name;
+app.get('/portfolios/edit/:id', async (req, res) => {
+    const portfolio = await Portfolio.findOne({ _id: req.params.id });
+    res.render('portfolio', {
+        portfolio
+    })
 
-//     uploadePhoto.mv(uploadPath, async () => {
-//         await Portfolio.create({
-//             ...req.body,
-//             photo: '/uploads/' + uploadePhoto.name
+});
 
-//         });
-//         res.redirect('/');
-//     })
+app.put('/portfolios/:id', async (req, res) => {
+    const portfolio = await Portfolio.findOne({ _id: req.params.id });
+    portfolio.title = req.body.title, 
+    portfolio.description = req.body.description
+    portfolio.save()
 
-// });
+     res.redirect("/")
+});
 
 app.post('/portfolios', async (req, res) => {
-//     await Portfolio.create(req.body)
-//     res.redirect('/')
-//   ;
-  
+
+
     const uploadDir = 'public/uploads';
-  
+
     if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
+        fs.mkdirSync(uploadDir);
     }
-  
+
     let uploadePhoto = req.files.photo;
     let uploadPath = __dirname + '/public/uploads/' + uploadePhoto.name;
-  
+
     uploadePhoto.mv(uploadPath, async () => {
-      await Portfolio.create({
-        ...req.body,
-        photo: '/uploads/' + uploadePhoto.name,
-      });
-      res.redirect('/');
+        await Portfolio.create({
+            ...req.body,
+            photo: '/uploads/' + uploadePhoto.name,
+        });
+        res.redirect('/');
     });
-  });
+});
 
 
 
