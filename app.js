@@ -56,15 +56,27 @@ app.get('/portfolios/edit/:id', async (req, res) => {
 });
 
 app.put('/portfolios/:id', async (req, res) => {
-    const portfolio = await Portfolio.findOne({ _id: req.params.id });
-    portfolio.title = req.body.title,
-    portfolio.brief = req.body.brief
-    portfolio.client = req.body.client,
-    portfolio.category = req.body.category,
-    portfolio.description = req.body.description
-    portfolio.save()
+    try {
+        const portfolio = await Portfolio.findOne({ _id: req.params.id });
 
-    res.redirect('/')
+        if (!portfolio) {
+
+            return res.status(404).send('portfolio not found');
+        }
+
+        portfolio.title = req.body.title,
+            portfolio.brief = req.body.brief
+        portfolio.client = req.body.client,
+            portfolio.category = req.body.category,
+            portfolio.description = req.body.description
+
+        await portfolio.save();
+
+        res.redirect('/');
+    } catch (error) {
+        res.status(500).send('server error')
+    }
+
 });
 
 app.post('/portfolios', async (req, res) => {
@@ -88,7 +100,34 @@ app.post('/portfolios', async (req, res) => {
     });
 });
 
+// app.delete('/portfolios/:id', async (req, res) => {
+//     const portfolio = await Portfolio.findOne({ _id: req.params.id });
+//     let deletedPhoto = __dirname + '/public' + portfolio.photo;
+//     fs.unlinkSync(deletedPhoto);
+//     await Portfolio.findByIdAndRemove(req.params.id);
+//     res.redirect('/');
+//   });
 
+app.get('/portfolios/delete/:id', async (req, res) => {
+
+    try {
+    const portfolio = await Portfolio.findOne({ _id: req.params.id });
+
+
+    if (!portfolio) {
+        return res.status(404).send('portfolio not found');
+    }
+
+    let deletedPhoto = __dirname + '/public' + portfolio.photo;
+
+    fs.unlinkSync(deletedPhoto)
+    await Portfolio.findByIdAndDelete(req.params.id);
+    res.status(200).redirect("/");
+
+} catch (error) {
+    res.status(500).send('server error')
+}
+});
 
 
 
