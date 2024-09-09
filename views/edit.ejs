@@ -1,0 +1,67 @@
+<%- include("./partials/_header.ejs") %>
+
+
+    <!-- EDİT YAPISI -->
+
+    <section class="page-section" id="contact">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase text-primary">Edit Project </h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            </div>
+            <form action="/portfolios/<%= portfolio._id %>?_method=PUT" method="POST" encType="multipart/form-data"
+                accept="jpg, png, jpeg, svg, bmp">
+                <div class="row align-items-center mb-5" style="flex-direction: column;">
+                    <div class="mb-3">
+                        <label for="title" class="col-form-label text-primary">Title:</label>
+                        <input type="text" class="form-control" id="title" name="title" required
+                            value="<%=portfolio.title%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="brief" class="col-form-label text-primary">Short Description:</label>
+                        <input type="text" class="form-control" id="brief" name="brief" required
+                            value="<%=portfolio.brief%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="client" class="col-form-label text-primary">Client:</label>
+                        <input type="text" class="form-control" id="client" name="client" required
+                            value="<%=portfolio.client%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="col-form-label text-primary">Category:</label>
+                        <input type="text" class="form-control" id="category" name="category" required
+                            value="<%=portfolio.category%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label text-primary">Description:</label>
+                        <textarea class="form-control" id="description" name="description"
+                            required><%=portfolio.description%> </textarea>
+                    </div>
+                </div>
+                <!-- Submit success message-->
+                <!---->
+                <!-- This is what your users will see when the form-->
+                <!-- has successfully submitted-->
+                <div class="d-none" id="submitSuccessMessage">
+                    <div class="text-center text-white mb-3">
+                        <div class="fw-bolder">Form submission successful!</div>
+                        To activate this form, sign up at
+                        <br />
+                        <a
+                            href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                    </div>
+                </div>
+                <!-- Submit error message-->
+                <!---->
+                <!-- This is what your users will see when there is-->
+                <!-- an error submitting the form-->
+                <div class="d-none" id="submitErrorMessage">
+                    <div class="text-center text-danger mb-3">Error sending message!</div>
+                </div>
+                <!-- Submit Button-->
+                <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase" id="submitButton"
+                        type="submit">Update</button></div>
+            </form>
+        </div>
+        <%- include("./partials/_footer.ejs") %>
+            </form>

@@ -1,6 +1,6 @@
 const express = require('express');
 const fs = require('fs');
-const methodOverride = require('method-override'); 
+const methodOverride = require('method-override');
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const ejs = require('ejs');
@@ -49,7 +49,7 @@ app.get('/portfolios/:id', async (req, res) => {
 
 app.get('/portfolios/edit/:id', async (req, res) => {
     const portfolio = await Portfolio.findOne({ _id: req.params.id });
-    res.render('portfolio', {
+    res.render('edit', {
         portfolio
     })
 
@@ -57,11 +57,14 @@ app.get('/portfolios/edit/:id', async (req, res) => {
 
 app.put('/portfolios/:id', async (req, res) => {
     const portfolio = await Portfolio.findOne({ _id: req.params.id });
-    portfolio.title = req.body.title, 
+    portfolio.title = req.body.title,
+    portfolio.brief = req.body.brief
+    portfolio.client = req.body.client,
+    portfolio.category = req.body.category,
     portfolio.description = req.body.description
     portfolio.save()
 
-     res.redirect("/")
+    res.redirect('/')
 });
 
 app.post('/portfolios', async (req, res) => {
