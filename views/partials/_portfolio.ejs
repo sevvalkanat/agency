@@ -4,12 +4,9 @@
     <div class="text-center">
       <h2 class="section-heading text-uppercase">Portfolio
         <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#portfolioAddModal">add</a>
-
       </h2>
+     
     </div>
-
-
-
     <!-- ADD MODAL YAPISI -->
     <div class="modal fade" id="portfolioAddModal" tabindex="-1" aria-labelledby="portfolioAddModalLabel"
       aria-hidden="true">
@@ -108,7 +105,7 @@
                     update
                   </a>
                   <a href="/portfolios/delete/<%= portfolios[i]._id %>" type="button" class="btn btn-danger"
-                    onclick="return confirm('ARE YOU SURE?')" >
+                    onclick="return confirm('ARE YOU SURE?')">
                     <i class="fas fa-xmark me-1"></i>
                     delete
                   </a>
@@ -133,7 +130,7 @@
                     <i class="fas fa-xmark me-1"></i>
                     Close Project
                   </button>
-                  
+
                 </div>
               </div>
             </div>

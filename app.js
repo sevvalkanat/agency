@@ -6,16 +6,13 @@ const mongoose = require('mongoose');
 const ejs = require('ejs');
 
 
-
 //models
 const Portfolio = require("./models/Portfolio");
+const User = require("./models/User");
 
 
 //connect db
 mongoose.connect('mongodb://localhost/agency-db')
-
-
-
 
 
 //middlewares
@@ -28,8 +25,6 @@ app.use(methodOverride('_method'));
 
 
 
-
-
 //routes
 app.get('/', async (req, res) => {
     const portfolios = await Portfolio.find({})
@@ -37,6 +32,29 @@ app.get('/', async (req, res) => {
         portfolios
     })
 });
+app.get('/register', async (req, res) => {
+    res.status(200).render(
+        'register'
+    )
+    });
+
+app.post('/register', async (req, res) => {
+    try{
+       const user = await User.create(req.body)
+       res.status(200).json({
+        status:'success',
+        user
+       })
+
+    } catch(error){
+        res.status(400).json({
+            status:'fail',
+            error
+
+            }
+        )
+    }
+    });
 
 
 app.get('/portfolios/:id', async (req, res) => {
@@ -100,6 +118,7 @@ app.post('/portfolios', async (req, res) => {
     });
 });
 
+//put methodu yöntemiyle portfolio silmek
 // app.delete('/portfolios/:id', async (req, res) => {
 //     const portfolio = await Portfolio.findOne({ _id: req.params.id });
 //     let deletedPhoto = __dirname + '/public' + portfolio.photo;
@@ -128,6 +147,7 @@ app.get('/portfolios/delete/:id', async (req, res) => {
     res.status(500).send('server error')
 }
 });
+
 
 
 

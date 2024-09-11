@@ -1,44 +1,33 @@
 <%- include("./partials/_header.ejs") %>
 
 
-    <!-- EDİT YAPISI -->
+    <!-- REGİSTER YAPISI -->
 
     <section class="page-section" id="contact">
         <div class="container">
             <div class="text-center">
-                <h2 class="section-heading text-uppercase text-primary">Edit Project </h2>
+                <h2 class="section-heading text-uppercase text-primary">REGISTER</h2>
                 <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
             </div>
-            <form action="/portfolios/<%= portfolio._id %>?_method=PUT" method="POST" encType="multipart/form-data"
-                accept="jpg, png, jpeg, svg, bmp">
+
+            <form action="/register" method="POST">
                 <div class="row align-items-center mb-5" style="flex-direction: column;">
                     <div class="mb-3">
-                        <label for="title" class="col-form-label text-primary">Title:</label>
-                        <input type="text" class="form-control" id="title" name="title" required
-                            value="<%=portfolio.title%>">
+                        <label for="brief" class="col-form-label text-primary">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
                     </div>
+                    <br>
                     <div class="mb-3">
-                        <label for="brief" class="col-form-label text-primary">Short Description:</label>
-                        <input type="text" class="form-control" id="brief" name="brief" required
-                            value="<%=portfolio.brief%>">
+                        <label for="title" class="col-form-label text-primary">Email:</label>
+                        <input type="text" class="form-control" id="email" name="email" required>
                     </div>
+                    <br>
                     <div class="mb-3">
-                        <label for="client" class="col-form-label text-primary">Client:</label>
-                        <input type="text" class="form-control" id="client" name="client" required
-                            value="<%=portfolio.client%>">
+                        <label for="brief" class="col-form-label text-primary">Password</label>
+                        <input type="text" class="form-control" id="password" name="password" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="category" class="col-form-label text-primary">Category:</label>
-                        <input type="text" class="form-control" id="category" name="category" required
-                            value="<%=portfolio.category%>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="col-form-label text-primary">Description:</label>
-                        <textarea class="form-control" id="description" name="description"
-                            required><%=portfolio.description%> </textarea>
-                    </div>
-                    
                 </div>
+                <br>
                 <!-- Submit success message-->
                 <!---->
                 <!-- This is what your users will see when the form-->
@@ -61,7 +50,6 @@
                 </div>
                 <!-- Submit Button-->
                 <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase" id="submitButton"
-                        type="submit">Update</button></div>
+                        type="submit">SİGN UP</button></div>
             </form>
-        </div
-           
+        </div>
