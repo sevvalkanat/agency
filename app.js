@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const methodOverride = require('method-override');
+const bcrypt =require('bcrypt');
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const ejs = require('ejs');
@@ -36,25 +37,56 @@ app.get('/register', async (req, res) => {
     res.status(200).render(
         'register'
     )
-    });
+});
+
+app.get('/login', async (req, res) => {
+    res.status(200).render(
+        'login'
+    )
+});
 
 app.post('/register', async (req, res) => {
-    try{
-       const user = await User.create(req.body)
-       res.status(200).json({
-        status:'success',
-        user
-       })
+    try {
+        const user = await User.create(req.body)
+        res.status(200).json({
+            status: 'success',
+            user
+        })
 
-    } catch(error){
+    } catch (error) {
         res.status(400).json({
-            status:'fail',
+            status: 'fail',
             error
 
-            }
+        }
         )
     }
-    });
+});
+
+app.post('/login', async (req, res) => {
+    try {
+    const {email,password} = req.body;
+
+    const user= await User.findOne({email});
+    if (user) {
+        bcrypt.compare(password, user.password, (err, same) => {
+            if(same){
+                res.status(200).send('YOU ARE LOGGED IN');   
+            }
+
+        })
+}
+}catch (error) {
+        res.status(400).json({
+            status: 'fail',
+            error
+
+        });
+    }
+});
+
+
+
 
 
 app.get('/portfolios/:id', async (req, res) => {
@@ -130,22 +162,22 @@ app.post('/portfolios', async (req, res) => {
 app.get('/portfolios/delete/:id', async (req, res) => {
 
     try {
-    const portfolio = await Portfolio.findOne({ _id: req.params.id });
+        const portfolio = await Portfolio.findOne({ _id: req.params.id });
 
 
-    if (!portfolio) {
-        return res.status(404).send('portfolio not found');
+        if (!portfolio) {
+            return res.status(404).send('portfolio not found');
+        }
+
+        let deletedPhoto = __dirname + '/public' + portfolio.photo;
+
+        fs.unlinkSync(deletedPhoto)
+        await Portfolio.findByIdAndDelete(req.params.id);
+        res.status(200).redirect("/");
+
+    } catch (error) {
+        res.status(500).send('server error')
     }
-
-    let deletedPhoto = __dirname + '/public' + portfolio.photo;
-
-    fs.unlinkSync(deletedPhoto)
-    await Portfolio.findByIdAndDelete(req.params.id);
-    res.status(200).redirect("/");
-
-} catch (error) {
-    res.status(500).send('server error')
-}
 });
 
 
