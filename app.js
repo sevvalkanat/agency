@@ -4,6 +4,7 @@ const methodOverride = require('method-override');
 const bcrypt = require('bcrypt');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 const ejs = require('ejs');
 
@@ -16,7 +17,7 @@ const User = require("./models/User");
 //connect db
 mongoose.connect('mongodb://localhost/agency-db')
 
-global.userIN = null;//golabal bir userın değişkeni tanımladık 
+global.userIN = null;//global bir userın değişkeni tanımladık 
 
 
 
@@ -32,17 +33,20 @@ app.use(session({
     secret: 'agency_pages',
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: 'mongodb://localhost/agency-db'}),
 }));
-app.use('*', (req, res, next) => {
-    userIN = req.session.userID;
-    next();
-});
+
 
 
 
 
 
 //routes
+app.use('*', (req, res, next) => {
+    userIN = req.session.userID;
+    next();
+});
+
 app.get('/', async (req, res) => {
     console.log(req.session.userID)
     const portfolios = await Portfolio.find({})
@@ -61,6 +65,14 @@ app.get('/login', async (req, res) => {
         'login'
     )
 });
+
+app.get('/logout',(req,res)=>{
+    req.session.destroy(()=>{
+        res.redirect('/');
+    })
+})
+
+
 
 app.post('/register', async (req, res) => {
     try {
